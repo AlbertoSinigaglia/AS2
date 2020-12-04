@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.2//EN" "http://checkstyle.sourceforge.net/dtds/configuration_1_3.dtd">
+<module name="Checker">
+    <module name="TreeWalker">
+        <module name="BooleanExpressionComplexity" />
+        <module name="CyclomaticComplexity" />
+        <module name="MethodLength" />
+        <module name="EmptyCatchBlock">
+            <property name="exceptionVariableName" value="expected|ignore" />
+        </module>
+        <module name="AvoidStarImport" />
+        <module name="IllegalImport" />
+        <module name="NeedBraces" />
+        <module name="LineLength">
+            <property name="max" value="120" />
+        </module>
+    </module>
+    <module name="FileLength" />
+    <module name="FileTabCharacter">
+        <property name="eachLine" value="true" />
+    </module>
+    <module name="Header">
+        <property name="header" value="////////////////////////////////////////////////////////////////////\n// ALBERTO SINIGAGLIA 1193384\n////////////////////////////////////////////////////////////////////" />
+        <property name="fileExtensions" value="java" />
+    </module>
+</module>
