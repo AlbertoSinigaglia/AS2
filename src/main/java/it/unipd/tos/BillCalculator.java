@@ -18,7 +18,11 @@ public class BillCalculator implements TakeAwayBill {
     if (this.areThereMoreThan30Elements()) {
       throw new TakeAwayBillException("Non puoi ordinare più di 30 elementi");
     }
-    return this.getTotal();
+    double total = this.getTotal();
+    if (this.isTheOrderLessThan10Euros()) {
+      total += 0.5;
+    }
+    return total;
   }
 
   private double getTotal() {
@@ -60,5 +64,9 @@ public class BillCalculator implements TakeAwayBill {
 
   private boolean areThereMoreThan30Elements() {
     return this.order.getItemsOrdered().size() > 30;
+  }
+
+  private boolean isTheOrderLessThan10Euros() {
+    return this.getTotal() < 10;
   }
 }
