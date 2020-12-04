@@ -144,4 +144,36 @@ public class BillCalculatorTest {
     Order order = new Order(items, 19, 10, new User("Test", "Test", 20));
     calculator.getOrderPrice(order);
   }
+
+  @Test
+  public void testForBasicOrderWithTotalLessThan10() throws TakeAwayBillException {
+    var items = List.of(
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 1", 1d),
+            new MenuItem(MenuItem.ItemType.BEVANDA, "bevanda 1", 7d)
+    );
+    Order order = new Order(items, 19, 10, new User("Test", "Test", 20));
+    assertEquals(
+            8 + 0.5, // totale + commissione
+            calculator.getOrderPrice(order),
+            DELTA);
+  }
+
+  @Test
+  public void testForOrderWithTotalLessThan10AndWithMoreThan5IceCreams() throws TakeAwayBillException {
+    var items = List.of(
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 1", 1d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 2", 0.50d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 3", 0.7d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 4", 1d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 5", 0.5d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 6", 2d),
+            new MenuItem(MenuItem.ItemType.BUDINO, "budino 1", 1.2d),
+            new MenuItem(MenuItem.ItemType.BEVANDA, "bevanda 1", 1d)
+    );
+    Order order = new Order(items, 19, 10, new User("Test", "Test", 20));
+    assertEquals(
+            7.9 - 0.25 + 0.5, // totale - 50% gelato meno costoso + commissione 0.5
+            calculator.getOrderPrice(order),
+            DELTA);
+  }
 }
