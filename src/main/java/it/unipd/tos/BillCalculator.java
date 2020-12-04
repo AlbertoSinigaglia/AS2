@@ -3,12 +3,18 @@
 ////////////////////////////////////////////////////////////////////
 package it.unipd.tos;
 
+import it.unipd.tos.giveawayfilters.GiveAwayFilter;
+
 import java.util.Comparator;
 import java.util.stream.Stream;
 
 public class BillCalculator implements TakeAwayBill {
   private Order order;
+  private final GiveAwayFilter filter;
 
+  public BillCalculator(GiveAwayFilter filter) {
+    this.filter = filter;
+  }
   @Override
   public double getOrderPrice(Order order) throws TakeAwayBillException, IllegalArgumentException {
     if(order == null){
@@ -17,6 +23,9 @@ public class BillCalculator implements TakeAwayBill {
     this.order = order;
     if (this.areThereMoreThan30Elements()) {
       throw new TakeAwayBillException("Non puoi ordinare più di 30 elementi");
+    }
+    if(this.filter.giveAway(order)){
+      return 0;
     }
     double total = this.getTotal();
     if (this.isTheOrderLessThan10Euros()) {
