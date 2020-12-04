@@ -1,5 +1,6 @@
 package it.unipd.tos;
 
+import it.unipd.tos.giveawayfilters.GiveAwayFilter;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,7 +13,7 @@ public class BillCalculatorTest {
   BillCalculator calculator;
   @Before
   public void setup(){
-    calculator = new BillCalculator();
+    calculator = new BillCalculator(order -> false); // non regalare mai
   }
 
   /**
@@ -175,5 +176,19 @@ public class BillCalculatorTest {
             7.9 - 0.25 + 0.5, // totale - 50% gelato meno costoso + commissione 0.5
             calculator.getOrderPrice(order),
             DELTA);
+  }
+
+  @Test
+  public void giveAwayIfFilterIsTrue() throws TakeAwayBillException {
+    var items = List.of(
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 1", 10d)
+    );
+    var order = new Order(items, 18, 10, new User("Test1", "Test", 12));
+    assertEquals(new BillCalculator(new GiveAwayFilter() {
+      @Override
+      public boolean giveAway(Order order) {
+        return true;
+      }
+    }).getOrderPrice(order), 0d, DELTA);
   }
 }
