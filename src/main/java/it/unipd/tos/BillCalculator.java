@@ -15,6 +15,9 @@ public class BillCalculator implements TakeAwayBill {
       throw new IllegalArgumentException("L'ordine non può essere null");
     }
     this.order = order;
+    if (this.areThereMoreThan30Elements()) {
+      throw new TakeAwayBillException("Non puoi ordinare più di 30 elementi");
+    }
     return this.getTotal();
   }
 
@@ -53,5 +56,9 @@ public class BillCalculator implements TakeAwayBill {
             el -> el.getItemType().equals(MenuItem.ItemType.GELATO) ||
                     el.getItemType().equals(MenuItem.ItemType.BUDINO)
     ).mapToDouble(MenuItem::getPrice).sum() > 50;
+  }
+
+  private boolean areThereMoreThan30Elements() {
+    return this.order.getItemsOrdered().size() > 30;
   }
 }
