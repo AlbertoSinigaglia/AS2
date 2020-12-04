@@ -19,11 +19,29 @@ public class BillCalculator implements TakeAwayBill {
   }
 
   private double getTotal() {
-    return this.getSubTotal();
+    double tot = this.getSubTotal();
+    if (this.areThereMoreThan5IceCreams()) {
+      tot -= this.getPriceCheapestIceCream() / 2;
+    }
+    return tot;
   }
 
   private double getSubTotal() {
     Stream<Double> integerStream = order.getItemsOrdered().stream().map(MenuItem::getPrice);
     return integerStream.reduce(0d, Double::sum);
+  }
+
+  private boolean areThereMoreThan5IceCreams() {
+    return this.order.getItemsOrdered().stream().filter(
+            el -> el.getItemType().equals(MenuItem.ItemType.GELATO)
+    ).count() > 5;
+  }
+
+  private double getPriceCheapestIceCream() {
+    return this.order.getItemsOrdered().stream().filter(
+            el -> el.getItemType().equals(MenuItem.ItemType.GELATO)
+    ).min(
+            Comparator.comparing(MenuItem::getPrice)
+    ).get().getPrice();
   }
 }
