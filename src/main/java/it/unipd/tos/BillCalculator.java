@@ -23,6 +23,9 @@ public class BillCalculator implements TakeAwayBill {
     if (this.areThereMoreThan5IceCreams()) {
       tot -= this.getPriceCheapestIceCream() / 2;
     }
+    if (this.areThereMoreThan50EurosInIceCreamsAndPuddings()) {
+      tot *= 0.9;
+    }
     return tot;
   }
 
@@ -43,5 +46,12 @@ public class BillCalculator implements TakeAwayBill {
     ).min(
             Comparator.comparing(MenuItem::getPrice)
     ).get().getPrice();
+  }
+
+  private boolean areThereMoreThan50EurosInIceCreamsAndPuddings() {
+    return this.order.getItemsOrdered().stream().filter(
+            el -> el.getItemType().equals(MenuItem.ItemType.GELATO) ||
+                    el.getItemType().equals(MenuItem.ItemType.BUDINO)
+    ).mapToDouble(MenuItem::getPrice).sum() > 50;
   }
 }
