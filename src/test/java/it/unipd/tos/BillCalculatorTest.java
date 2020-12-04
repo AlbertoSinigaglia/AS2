@@ -104,4 +104,44 @@ public class BillCalculatorTest {
             calculator.getOrderPrice(order),
             DELTA);
   }
+
+  @Test(expected = TakeAwayBillException.class)
+  public void testNoMoreThan30ElementsAllowed() throws TakeAwayBillException {
+    var items = List.of(
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 1", 1d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 2", 0.50d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 3", 0.7d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 4", 1d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 5", 0.5d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 6", 2d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 7", 2d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 8", 2d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 9", 2d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 10", 2d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 11", 2d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 12", 2d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 13", 2d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 14", 2d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 15", 2d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 16", 2d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 17", 2d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 18", 2d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 19", 2d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 20", 2d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 21", 2d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 22", 2d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 23", 2d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 24", 2d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 25", 2d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 26", 2d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 27", 2d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 28", 2d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 29", 2d),
+            new MenuItem(MenuItem.ItemType.GELATO, "gelato 30", 2d),
+            new MenuItem(MenuItem.ItemType.BUDINO, "budino 1", 1.2d),
+            new MenuItem(MenuItem.ItemType.BEVANDA, "bevanda 1", 1d)
+    );
+    Order order = new Order(items, 19, 10, new User("Test", "Test", 20));
+    calculator.getOrderPrice(order);
+  }
 }
